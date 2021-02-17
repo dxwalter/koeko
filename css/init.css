@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+brand-color: rgba(238, 100, 37, 1);
+bg-color: rgba(244, 244, 244, 1);
+dark-color: rgba(64, 64, 64, 1);
+shadow-color: rgba(0, 0, 0, 0.2);
+black-color-06:rgba(0, 0, 0, 0.6);
+white-color: rgba(255, 255, 255, 1);
+notification-color: rgba(187, 35, 32, 1);
+gold-color: rgba(239, 134, 14, 1);
+light-black: rgba(0, 0, 0, 0.6);
+brand-color-hover: rgba(213, 79, 16, 1);
+light-grey: rgba(246, 248, 249, 1);
+
+placeholder-bg: rgba(141, 140, 140, 0.7);
+
+btn-box-shadow: 0px 1px 3px shadow-color;
+border: 1px solid rgba(0, 0, 0, 0.09);
+
+
+
+// MEDIA QUERY
+mq-xs: "min-width: 0px";
+mq-sm: "min-width: 399px"; // medium handset
+mq-mb: "min-width: 599px"; // large handset
+mq-md: "min-width: 959px"; // large tablet
+mq-lg: "min-width: 1279px"; // very large tab/pc
+mq-xl: "min-width: 1979px"; // large pc
