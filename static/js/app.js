@@ -1,6 +1,8 @@
 
 function changeJumbotronColor () {
     
+    console.log("hereman")
+
     let randomNumer = Math.floor(Math.random() * 8) + 1;
     let target = document.getElementById('jumbotronContainer');
     target.setAttribute('data-bg', randomNumer)
