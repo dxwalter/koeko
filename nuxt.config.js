@@ -49,6 +49,7 @@ module.exports = {
 		{ src: '~/plugins/scroll-to-top.client.vue', ssr: false },
 		{ src: '~/plugins/pwa/custom-service-worker.js', ssr: false },
 		{ src: '~/plugins/ga.client.js', ssr: false },
+		{ src: '~/plugins/animate-scroll.client.js', ssr: false },
 		{ src: '~/plugins/blogEditor.js', ssr: false }
 	],
 	
@@ -137,12 +138,7 @@ module.exports = {
 	},
 	buildModules: [
 		'@nuxtjs/dotenv',
-		'@nuxtjs/auth',
-		'@nuxtjs/vuetify'
 	],
-	build: {
-		transpile: ['vuetify/lib', "tiptap-vuetify"]
-	},
 	apollo: {
 		clientConfigs: {
 			default: '~/apollo/client-configs/default.js',

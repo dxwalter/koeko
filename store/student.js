@@ -5,19 +5,7 @@ const state = () => ({
     phone: "",
     userId: "",
     displayPicture: "",
-    reviewScore: 0,
-    review: [],
-    address: {
-        number: "",
-        street: "",
-        community: "",
-        state: "",
-        busStop: "",
-    },
-    anonymousId: "",
     isLoggedIn: false,
-    emailNotification: 1,
-    newNotificationCount: 0,
     oneSignalId: ""
 
 });
@@ -30,25 +18,13 @@ const getDefaultState = () => {
         phone: "",
         userId: "",
         displayPicture: "",
-        reviewScore: "",
-        review: [],
-        address: {
-            number: "",
-            street: "",
-            community: "",
-            state: "",
-            busStop: "",
-        },
-        anonymousId: "",
         isLoggedIn: false,
-        emailNotification: 1,
-        newNotificationCount: 0,
         oneSignalId: ""
 	}
 }
 
 const actions = {
-    resetCustomerState (context, state) { context.commit('resetCustomerState', state)},
+    resetStudentState (context, state) { context.commit('resetStudentState', state)},
     setAnonymousId (context, payload) { context.commit('setAnonymousId',  payload)},
     setCustomerData (context, payload) { context.commit('setCustomerData', payload)},
     changeLoginStatus (context, payload) { context.commit('changeLoginStatus', payload) },
@@ -73,22 +49,11 @@ const mutations = {
         if (dataObject.userToken != undefined) state.userToken = dataObject.userToken
         if (dataObject.phone != undefined) state.phone = dataObject.phone
         if (dataObject.displayPicture != undefined) state.displayPicture = dataObject.displayPicture
-        if (dataObject.reviewScore != undefined) state.reviewScore = dataObject.reviewScore
-        if (dataObject.emailNotification != undefined) state.emailNotification = dataObject.emailNotification
-
-        if (dataObject.address != undefined) {
-            state.address.busStop = dataObject.address.busStop
-            state.address.number = dataObject.address.number
-            state.address.street = dataObject.address.street
-            state.address.community = dataObject.address.community
-            state.address.state = dataObject.address.state
-        }
-
     },
     setNotificationCount: (state, count) => {
         state.newNotificationCount = count
     },
-    resetCustomerState: (state) => Object.assign(state, getDefaultState())
+    resetStudentState: (state) => Object.assign(state, getDefaultState())
 }
 
 export default {

@@ -23,6 +23,10 @@
                     <button class="btn btn-primary btn-lg width-100">Recover your password</button>
                   </div>
 
+                  <div class="forgot-password">
+                      <n-link prefetch to="/auth/sign-in">Sign in to continue</n-link>
+                  </div>
+
                 </form>
 
               </div>

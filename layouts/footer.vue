@@ -10,8 +10,8 @@
 
           <div class="bottom-links">
             <n-link prefetch aria-current="page" to="/auth/sign-in">Sign in</n-link>
-            <a href="">About us</a>
-            <a href="">Contact us</a>
+            <n-link to="/about">About us</n-link>
+            <n-link to="/contact">Contact us</n-link>
           </div>
 
         </div>

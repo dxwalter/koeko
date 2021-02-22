@@ -6,7 +6,7 @@
           <div class="section-small-header white-text-header-fade">Do you want to reduce the cost of running your business and increase profit?.</div>
 
           <div class="bottom-lg-cta">
-            <button class="btn btn-white btn-large">Start learning now</button>
+            <n-link prefetch to="/courses" class="btn btn-white btn-large">Start learning now</n-link>
           </div>
         </div>
       </div>
