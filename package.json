@@ -20,6 +20,7 @@
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
     "nanoid": "^2.1.11",
+    "net": "^1.0.2",
     "nuxt": "^2.14.0",
     "nuxt-graphql-request": "^3.0.0",
     "nuxt-lazy-load": "^1.2.4",

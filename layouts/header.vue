@@ -58,6 +58,7 @@ import NOTIFICATION from '~/components/notification/notification.vue';
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
+    name: "HEADER",
     components: {
         NOTIFICATION
     },

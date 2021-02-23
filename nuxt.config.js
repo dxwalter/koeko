@@ -139,6 +139,13 @@ module.exports = {
 	buildModules: [
 		'@nuxtjs/dotenv',
 	],
+	build: {
+		extend (config, { isDev, isClient }) {
+		   config.node = {
+				fs: 'empty'
+			}
+		}
+	},
 	apollo: {
 		clientConfigs: {
 			default: '~/apollo/client-configs/default.js',

@@ -45,15 +45,15 @@
 
                         </div>
                         
-                        <!-- <div class="course-card-options">
+                        <div class="course-card-options">
                             <div class="options-header">Enrolled</div>
-                            <div class="options-detail">500 people</div>
-                        </div> -->
+                            <div class="options-detail">{{course.enrolledCount}} <span v-show="course.enrolledCount == 1">Person</span><span v-show="course.enrolledCount > 1">People</span> </div>
+                        </div>
                         
                         <div class="course-card-options">
                             <div class="options-header">Review</div>
                             <div class="options-detail">
-                                <StarRating :score=0></StarRating>
+                                <StarRating :score=course.reviewScore></StarRating>
                                 <Nuxt />
                             </div>
                         </div>
@@ -61,11 +61,14 @@
                     </div>
     
                     <div class="course-card-action" v-if="course.enrolled">
-                        <button class="btn btn-small btn-success width-100" data-bs-toggle="modal" data-bs-target="#anonymouseSignUpForACourse">Continue learning</button>
+                        <n-link :to="`/course/${course.courseId}`" class="btn btn-small btn-success width-100">Continue learning</n-link>
                     </div>
                     <div class="course-card-action" v-else>
                         <n-link :to="`/funnel/${course.funnelPage}?q=${course.courseId}`" class="btn btn-small btn-white width-100">Learn more</n-link>
-                        <button class="btn btn-small btn-primary width-100" @click="checkCourseStatus(course.courseId, course.price, course.name)">Enroll now</button>
+                        <button class="btn btn-small btn-primary width-100" :id="`enrollButton${course.courseId}`" @click="checkCourseStatus(course.courseId, course.price, course.name)">
+                            Enroll now
+                            <div class="loader-action"><span class="loader"></span></div>
+                        </button>
                     </div>
                 </div>
     
@@ -111,7 +114,7 @@
                                         </div>
 
                                         <div class="forgot-password">
-                                            <n-link prefetch to="/auth/sign-in">Do a bank transfer</n-link>
+                                            <n-link prefetch to="/auth/sign-in"  data-bs-dismiss="modal">If you have an account, sign in before purchasing this course</n-link>
                                         </div>
 
                                         <div class="paystack-pay-container" v-show="showPaymentModal">
@@ -121,6 +124,52 @@
                                                     :email="studentEmail"
                                                     :paystackkey="paystackKey"
                                                     :callback="SuccessfulPayment"
+                                                    :close="cancelTransaction"
+                                                    :embed="false"
+                                                    :firstname="studentName"
+                                            >Pay ₦{{formatPrice(coursePrice)}} with your card</paystack>
+
+                                            <button class="btn btn-white btn-lg width-100">Do a bank transfer</button>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="modal fade show" id="knownUserPaymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header remove-border">
+                                <!-- <h5 class="modal-title" id="exampleModalLabel">Create your account</h5> -->
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body ">
+                                <div class="registration-container">
+                                    <div class="intro-header mg-bottom-32">
+                                        <div class="logo-container">
+                                            <img src="~/assets/images/koeko-logo-icon.png" alt="">
+                                        </div>
+                                        <div class="header">
+                                            Grab this course now.
+                                        </div>
+                                        <div class="mini-header">It's safe, fast, and easy.</div>
+                                    </div>
+
+                                    <div class="position-relative height-auto">
+
+                                        <div class="paystack-pay-container remove-position-absolute">
+
+                                            <paystack class="btn btn-primary btn-lg width-100" id="payWithPaystack"
+                                                    :amount="coursePrice * 100"
+                                                    :email="studentEmail"
+                                                    :paystackkey="paystackKey"
+                                                    :callback="SuccessfulPaymentForSignedStudent"
                                                     :close="cancelTransaction"
                                                     :embed="false"
                                                     :firstname="studentName"
@@ -149,7 +198,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 import StarRating from '~/plugins/vue-star-rating.client.vue'
 
-import { GET_ALL_COURSES_FOR_ANONYMOUS_USER } from '~/graphql/courses';
+import { GET_ALL_COURSES_FOR_ANONYMOUS_USER, STUDENT_ENROLL_INTO_COURSE } from '~/graphql/courses';
 
 import { CREATE_NEW_STUDENT  } from '~/graphql/student';
 
@@ -172,6 +221,7 @@ export default {
             courseName: "",
             coursePrice: "",
             courseId: "",
+            transactionId: "",
 
             // create free student
             studentName: "",
@@ -196,6 +246,19 @@ export default {
             this.showPaymentModal = 0
             this.$initiateNotification('info', "", "Your transaction was cancelled")
         },
+        SuccessfulPaymentForSignedStudent: async function (transaction) {
+            
+            if (transaction.status == 'success' && transaction.message == 'Approved') {
+                
+                this.anonymousModal.toggle()
+                
+                this.transactionId = transaction.reference;
+
+                this.$showToast("Your payment was successful. Please wait", "success", 6000)
+                
+                this.enrollStudentIntoCourse()
+            }
+        },
         SuccessfulPayment: async function (transaction) {
             
             this.showPaymentModal = 0
@@ -208,10 +271,10 @@ export default {
 
                 target.disabled = true;
 
-                let transactionId = transaction.reference;
+                this.transactionId = transaction.reference;
 
                 let variables = {
-                    transactionReferenceId: transactionId,
+                    transactionReferenceId: this.transactionId,
                     courseId: this.courseId,
                     name: this.studentName,
                     email: this.studentEmail,
@@ -264,13 +327,17 @@ export default {
             }
         },
         createStudentAndEnroll: async function () {
-            // validate name
+
             if (this.studentName.length < 3) {
                 this.$addRedBorder('studentName');
                 return this.$showToast('Your fullname must be greater than 2 characters', "error", 3000)
             } else {
                 this.$removeRedBorder('studentName');
             }
+
+            
+
+            return
 
             // validate email
             if (this.studentEmail.length < 5 || this.$validateEmailAddress(this.studentEmail) == false) {
@@ -292,6 +359,51 @@ export default {
 
 
         },
+        enrollStudentIntoCourse: async function () {
+
+            let target = document.getElementById(`enrollButton${this.courseId}`);
+
+            this.$showToast('Your enrollment has started. Please wait', "info", 2000)
+
+            target.disabled = true;
+
+            let variables = {
+                courseId: this.courseId,
+                transactionRef: this.transactionId
+            }
+            
+            let context = {
+                headers: {
+                    'accessToken': this.accessToken
+                }
+            }
+
+            let request = await this.$performGraphQlMutation(this.$apollo, STUDENT_ENROLL_INTO_COURSE, variables, context);
+
+            target.disabled = true;
+
+            if (request.error) {
+                this.$initiateNotification('error', "Network Error", request.message)
+                return
+            }
+
+            let result = request.result.data.StudentEnrollCourse;
+
+            if (result.error) {
+                this.$initiateNotification('error', "Update error", result.message)
+                return
+            }
+
+            this.$initiateNotification('success', "Enrollment successful", result.message)
+
+            clearTimeout(this.timeOutHolder)
+
+            this.timeOutHolder = setTimeout(() => {
+                this.$router.push(`/course/${this.courseId}/`)
+            }, 1000);   
+
+
+        },
         checkCourseStatus: function (courseId, coursePrice, courseName) {
             this.courseName = courseName;
             this.coursePrice = coursePrice;
@@ -300,10 +412,17 @@ export default {
             if (this.accessToken) {
                 // 
                 // just enroll student into course
-                return
-            }
+                if (this.coursePrice == 0) {
+                    this.transactionId = "FREE";
+                    this.enrollStudentIntoCourse();
+                    return
+                }
 
-            this.anonymousModal = new bootstrap.Modal(document.getElementById('anonymouseSignUpForACourse'))
+                this.anonymousModal = new bootstrap.Modal(document.getElementById('knownUserPaymentModal'))
+                
+            } else {
+                this.anonymousModal = new bootstrap.Modal(document.getElementById('anonymouseSignUpForACourse'))
+            }
 
             this.anonymousModal.toggle()
 
@@ -315,6 +434,9 @@ export default {
             this.isLoggedIn = this.GetLoginStatus();
             let customerData = this.GetCustomerData();
             this.accessToken = customerData.userToken
+
+            this.studentEmail = customerData.email;
+            this.studentName = customerData.fullname;
         },
         formatPrice (number) {
             return this.$numberNotation(number)

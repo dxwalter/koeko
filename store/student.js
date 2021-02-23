@@ -4,6 +4,9 @@ const state = () => ({
     email: "",
     phone: "",
     userId: "",
+    instagramId: "",
+    gender: "",
+    userId: "",
     displayPicture: "",
     isLoggedIn: false,
     oneSignalId: ""
@@ -16,6 +19,9 @@ const getDefaultState = () => {
         fullname: "",
         email: "",
         phone: "",
+        userId: "",
+        instagramId: "",
+        gender: "",
         userId: "",
         displayPicture: "",
         isLoggedIn: false,
@@ -46,6 +52,8 @@ const mutations = {
         if (dataObject.fullname != undefined) state.fullname = dataObject.fullname
         if (dataObject.email != undefined) state.email = dataObject.email
         if (dataObject.userId != undefined) state.userId = dataObject.userId
+        if (dataObject.gender != undefined) state.gender = dataObject.gender
+        if (dataObject.instagramId != undefined) state.instagramId = dataObject.instagramId
         if (dataObject.userToken != undefined) state.userToken = dataObject.userToken
         if (dataObject.phone != undefined) state.phone = dataObject.phone
         if (dataObject.displayPicture != undefined) state.displayPicture = dataObject.displayPicture

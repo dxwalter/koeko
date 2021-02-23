@@ -800,6 +800,7 @@ img {
 
 .registration-container {
     width: 100%;
+    padding: 16px;
 }
 
 @media(min-width: 576px) {
@@ -1085,7 +1086,7 @@ button.nav-link {
     position: absolute;
     top: 0;
     bottom: 0;
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -1361,6 +1362,13 @@ button.nav-link {
     position: fixed;
     top: 10px !important;
     right: 16px !important;
+    width: 80%
+}
+
+@media(min-width: 599px) {
+    .vue-notification {
+        width: 300px;
+    }
 }
 
 .vue-notification  .notification-title {
@@ -1479,4 +1487,20 @@ button:disabled .loader-action {
 
 .paystack-pay-container .btn:first-child {
     margin-bottom: 16px;
+}
+
+.paystack-pay-container.remove-position-absolute {
+    position: unset;
+    padding: 0;
+    margin-bottom: 64px;
+}
+
+.remove-margin-right {
+    margin-right: 0 !important;
+}
+
+.btn-sm {
+    padding: .25rem .5rem !important;
+    font-size: .875rem !important;
+    border-radius: .2rem !important;
 }

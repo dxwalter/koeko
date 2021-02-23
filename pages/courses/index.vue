@@ -12,7 +12,7 @@
                         <div class="jumbotron-container" data-bg="0" id="jumbotronContainer">
                             <div>
                                 <div class="big-jb-text">All courses</div>
-                                <div class="big-jb-small">Our courses are designed to help you save cost and grow your business</div>
+                                <div class="big-jb-small">Our courses are designed to help your business save cost & maximise profit</div>
                             </div>
                         </div>
                     </div>

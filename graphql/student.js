@@ -45,3 +45,29 @@ query loginStudent($email: String!, $password: String!) {
   }
 }
 `
+
+export const RECOVER_PASSWORD = gql`
+query changePassword($email: String!){
+  RecoverStudentPassword(input:{
+    email: $email
+  }) {
+    code
+    success
+    message
+  }
+}
+`
+
+export const CHANGE_PASSWORD = gql`
+  mutation changePassword ($email: String!, $password: String!) {
+      CreateNewStudentPassword(input:{
+        email: $email,
+        password: $password
+      }) {
+        code
+        success
+        message
+      }
+  }
+`
+
