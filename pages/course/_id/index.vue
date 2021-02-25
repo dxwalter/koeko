@@ -67,12 +67,12 @@
                             </div>
 
                             <div>
-                              <div v-html="content.materials">Praesent vestibulum dapibus nibh. Phasellus viverra nulla ut metus varius laoreet. Nam commodo suscipit quam. Etiam ut purus mattis mauris sodales aliquam. Phasellus gravida semper nisi.</div>
+                              <div v-html="content.materials"></div>
                             </div>
                           </div>
 
                           <div>
-                            <a href="#" class="btn btn-primary">Watch now</a>
+                            <n-link :to="`/course/${courseId}/content?contentId=${content.contentId}`" class="btn btn-primary width-100">Watch now</n-link>
                           </div>
                         </div>
 
@@ -114,7 +114,7 @@ import FOOTER from '~/layouts/footer.vue'
 
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
-import { STUDENT_GET_COURSE_DETAILS } from '~/graphql/courses';
+import { STUDENT_GET_COURSE_DETAILS, STUDENT_MARK_COURSE_AS_COMPLETE } from '~/graphql/courses';
 
 export default {
     name: "COURSECONTENTLISTING",
@@ -213,6 +213,24 @@ export default {
 
             this.completeScore = perUnitScore * score
 
+            if (this.completeScore == 100) {
+              this.markCourseAsComplete();
+            }
+
+        },
+        markCourseAsComplete: async function () {
+          let variables = {
+            courseId: this.courseId
+          }
+
+
+          let context = {
+              headers: {
+                  'accessToken': this.accessToken
+              }
+          }
+
+          let request = await this.$performGraphQlMutation(this.$apollo, STUDENT_MARK_COURSE_AS_COMPLETE, variables, context);          
         }
     },
     created() {

@@ -87,3 +87,50 @@ query getCourseDetails($courseId: String!) {
   }
 }
 `
+
+export const STUDENT_GET_COURSE_VIDEO = gql`
+query getVideo ($courseId: String!, $contentId: String!) {
+  StudentGetCourseVideo(input:{
+    courseId: $courseId,
+    contentId: $contentId
+  }) {
+    videoContent {
+      keywords
+      title
+      videoLink
+      materials
+      courseId
+      displayPicture
+      contentId
+    }
+    code
+    success
+    message
+  }
+}
+`
+
+export const MarkTutorialAsComplete = gql`
+mutation markAsComplete ($courseId: String!, $contentId: String!) {
+  StudentMarkContentAsComplete(input:{
+    courseId: $courseId,
+    contentId: $contentId
+  }) {
+    code
+    success
+    message
+  }
+}
+`
+
+export const STUDENT_MARK_COURSE_AS_COMPLETE = gql`
+mutation markAsComplete ($courseId: String!) {
+  StudentMarkCourseAsComplete(input:{
+    courseId: $courseId
+  }){
+    code
+    success
+    message
+  }
+}
+`

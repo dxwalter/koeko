@@ -6,29 +6,39 @@
             <div class="page-container-two grey-bg">
                 <div class="container">
 
-                    
-                    <div class="course-option-data-container">
-                        <!-- video containers -->
-                        <video controls class="video-controller mg-bottom-32" poster="~/assets/images/wallpaper/3.jpg">
-                            <source src="https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
+                    <div class="content-loader" v-show="isLoading">
+                        <div class="loader-action"><span class="loader"></span></div>
                     </div>
 
-                    <div class="course-option-data-container">
-                        Praesent congue erat at massa. Fusce ac felis sit amet ligula pharetra condimentum. Donec vitae orci sed dolor rutrum auctor. Cras varius. Curabitur nisi.
+                    <div class="col-sm-12" v-show="errorPage && !isLoading">
+                        <div class="error-container">
+                            <div class="image-area">
+                                <img src="~/assets/images/warning.svg" alt="" srcset="">
+                            </div>
 
-                        Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo. Curabitur at lacus ac velit ornare lobortis. Praesent ac massa at ligula laoreet iaculis. Nullam dictum felis eu pede mollis pretium. Suspendisse pulvinar, augue ac venenatis condimentum, sem libero volutpat nibh, nec pellentesque velit pede quis nunc.
-
-                        Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. Quisque id odio. Fusce neque. Nam ipsum risus, rutrum vitae, vestibulum eu, molestie vel, lacus. Nunc nulla.
-
-                        Nam commodo suscipit quam. Nulla porta dolor. Cras id dui. Phasellus viverra nulla ut metus varius laoreet.
+                            <div class="error-header-area">Oops! An error occurred</div>
+                            <div class="error-message">{{errorMessage}}</div>
+                            <div class="d-flex-center">
+                                <button @click="getContentDetails()" class="btn btn-large btn-primary">Try again</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="course-option-data-container">
-                        <div class="course-content-controller">
-                            <button class="btn btn-primary">Write a review</button>
-                            <button class="btn btn-success">Mark as complete</button>
+                    <div >
+                        <div class="course-option-data-container for-iframe" v-html="contentVideo">
+                            <!-- video containers -->
+                        </div>
+
+                        <div class="course-option-data-container" v-html="contentMaterial">
+                        </div>
+
+                        <div class="course-option-data-container">
+                            <div class="course-content-controller">
+                                <button class="btn btn-success" id="markAsComplete" @click="markAsComplete()">
+                                    Mark as complete
+                                    <div class="loader-action"><span class="loader"></span></div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -45,18 +55,157 @@ import HEADER from '~/layouts/header.vue'
 import BOTTOMADS from '~/layouts/bottom-ads.vue'
 import FOOTER from '~/layouts/footer.vue'
 
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+
+import { STUDENT_GET_COURSE_VIDEO, MarkTutorialAsComplete } from '~/graphql/courses';
+
 export default {
-    name: "LANDINGPAGE",
+    name: "COURSECONTENTPAGE",
 	components: {HEADER, FOOTER, BOTTOMADS},
-    methods: {
+    data: function () {
+        return {
+            isLoggedIn: "",
+            accessToken: "",
+            isLoading: true,
+            allCourses: "",
+            errorMessage: "",
+            errorPage: false,
+            courseId: "",
+            contentId: "",
 
+            contentTitle: "",
+            contentDescription: "",
+            contentVideo: "",
+            contentMaterial: "",
+
+            timeOutHolder: null
+        }
     },
-    created () {
+    methods: {
+        ...mapGetters({
+            'GetLoginStatus': 'student/GetLoginStatus',
+            'GetCustomerData': 'student/GetCustomerDetails',
+        }),
+        markAsComplete: async function () {
 
+            let target = document.getElementById('markAsComplete');
+
+            target.disabled = true;
+
+            let variables = {
+                courseId: this.courseId,
+                contentId: this.contentId
+            }
+
+
+            let context = {
+                headers: {
+                    'accessToken': this.accessToken
+                }
+            }
+
+            let request = await this.$performGraphQlMutation(this.$apollo, MarkTutorialAsComplete, variables, context);
+            
+            target.disabled = false;
+
+            if (request.error) {
+                return this.$initiateNotification('error', 'Failed request', request.message);
+            }
+
+            let result = request.result.data.StudentMarkContentAsComplete;
+
+            if (result.success == false) {
+                return this.$initiateNotification('error', 'Failed request', result.message);
+            }
+
+            this.$initiateNotification('success', 'Marked', result.message);
+
+            clearTimeout(this.timeOutHolder)
+
+            this.timeOutHolder = setTimeout(() => {
+                this.$router.push(`/course/${this.courseId}`)
+            }, 1000); 
+
+        },
+        statusChecker () {
+            this.isLoggedIn = this.GetLoginStatus();
+            let customerData = this.GetCustomerData();
+            this.accessToken = customerData.userToken
+
+            if (this.isLoggedIn == false) {
+                this.$router.push(`/auth/logout/`)
+            }
+        },
+        getContentDetails: async function () {
+            this.isLoading = true
+          
+            let variables = {
+                courseId: this.courseId,
+                contentId: this.contentId
+            }
+
+
+            let context = {
+                headers: {
+                    'accessToken': this.accessToken
+                }
+            }
+
+            let request = await this.$performGraphQlQuery(this.$apollo, STUDENT_GET_COURSE_VIDEO, variables, context);
+            
+            this.isLoading = false;
+
+            if (request.error) {
+                this.errorMessage = request.message;
+                this.errorPage = true;
+                return this.$initiateNotification('error', 'Failed request', request.message);
+            }
+
+            let result = request.result.data.StudentGetCourseVideo;
+
+            if (result.success == false) {
+                this.errorMessage = result.message;
+                this.errorPage = true;
+                return this.$initiateNotification('error', 'Failed request', result.message);
+            }
+
+            this.errorPage = false
+
+            let courseContentVideo = result.videoContent;
+
+            this.contentTitle = courseContentVideo.title;
+            this.contentMaterial = courseContentVideo.materials;
+            this.contentVideo = courseContentVideo.videoLink;
+
+        }
+     },
+    created() {
+        if (process.browser) {
+        
+            let urlParam = this.$route.params.id;
+            let contentId = this.$route.query.contentId;
+
+            console.log(contentId)
+            
+            if (urlParam == undefined || urlParam == null || urlParam.length == 0) {
+                return this.$router.push('/courses/enrolled-courses/');
+            } else {
+                this.courseId = urlParam
+                if (contentId == undefined || contentId == null || contentId.length == 0) {
+                    return this.$router.push('/courses/enrolled-courses/');
+                } else {
+                    this.contentId = contentId
+                }
+            }
+
+            this.statusChecker()
+
+            this.getContentDetails() 
+        }
+    },
+    beforeDestroy () {
+        clearTimeout(this.timeOutHolder)
     }
+
 }
 </script>
-
-<style>
-
-</style>
