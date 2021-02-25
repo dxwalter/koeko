@@ -166,7 +166,7 @@ module.exports = {
 		INSTAGRAM_APP_SECRET:process.env.INSTAGRAM_APP_SECRET
 	},
 	server: {
-		port: 6666, // default: 3000
+		port: 7777, // default: 3000
 		host: '0.0.0.0' // default: localhost
 	}
 
