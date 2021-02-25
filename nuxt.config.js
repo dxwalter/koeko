@@ -64,8 +64,16 @@ module.exports = {
 				// See IntersectionObserver documentation
 			}
 		}],
-		'@nuxtjs/axios'
+		'@nuxtjs/axios',
+		'nuxt-facebook-pixel-module',
 	],
+	facebook: {
+		/* module options */
+		pixelId: '947417772730133',
+		track: 'PageView',
+		autoPageView: true,
+		disabled: false
+	},
 	loading: false,
 	pwa: {
 		icon: {
