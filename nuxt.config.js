@@ -58,12 +58,6 @@ module.exports = {
 		'@nuxtjs/onesignal',
 		'@nuxtjs/pwa',
 		'@nuxtjs/apollo',
-		['nuxt-lazy-load', {
-			defaultImage: '/images/image-loader.png',
-			observerConfig: {
-				// See IntersectionObserver documentation
-			}
-		}],
 		'@nuxtjs/axios',
 		'nuxt-facebook-pixel-module',
 	],
