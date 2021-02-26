@@ -184,8 +184,6 @@ export default {
         
             let urlParam = this.$route.params.id;
             let contentId = this.$route.query.contentId;
-
-            console.log(contentId)
             
             if (urlParam == undefined || urlParam == null || urlParam.length == 0) {
                 return this.$router.push('/courses/enrolled-courses/');
