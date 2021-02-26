@@ -1,5 +1,5 @@
 {
-  "name": "cudua-ui",
+  "name": "koeko",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -52,14 +52,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dxwalter/cudua-ui.git"
+    "url": "git+https://github.com/dxwalter/koeko.git"
   },
   "author": "Cudua Inc",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dxwalter/cudua-ui/issues"
+    "url": "https://github.com/dxwalter/koeko/issues"
   },
-  "homepage": "https://github.com/dxwalter/cudua-ui#readme",
+  "homepage": "https://github.com/dxwalter/koeko#readme",
   "engines": {
     "node": "12.x"
   }

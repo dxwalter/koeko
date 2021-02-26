@@ -7,14 +7,14 @@ module.exports = {
 			{ charset: 'utf-8' },
 			{ name: 'viewport', content: 'user-scalable=no, initial-scale=1, maximum-scale=1' },
 			{
-				hid: 'Cudua_description',
+				hid: 'Koeko_description',
 				name: 'description',
 				content: 'Learn fast and easy DO-IT-YOURSELF skills that will help your business reduce cost and increase profit.'
 			},
 			{
 				hid:'og:image',
 				name: 'og:image',
-				content: 'https://res.cloudinary.com/cudua-images/image/upload/v1600784939/cudua_asset/icon-colored-png_qkocfy.png'
+				content: 'https://res.cloudinary.com/cudua-images/image/upload/v1613919731/cudua_asset/koeko-logo-icon_grhnks.png'
 			}
 		],
 	
@@ -84,10 +84,10 @@ module.exports = {
 			mobileApp: 'mobile-web-app-capable',
 			mobileAppIOS: false,
 			appleStatusBarStyle: 'default',
-			name: "Cudua",
-			author: "Cudua Inc.",
-			description: "The online market for Cudua is an ecommerce service that allows fashion and beauty businesses to create and manage their online shops. Customers buy products from these businesses by searching for the business using the business name or location",
-			theme_color: '#ee6425',
+			name: "Koeko",
+			author: "Koeko Inc.",
+			description: "In 1 hour, you can learn a skill and never hire a professional",
+			theme_color: '#fff',
 			ogHost: "https://koeko.xyz",
 			nativeUI: true,
 		},
@@ -117,7 +117,7 @@ module.exports = {
 					handler: 'cacheFirst',
 					method: 'GET',
 					strategyOptions: {
-						cacheName: 'cudua-commerce-cache',
+						cacheName: 'kokeo-cache',
 						cacheableResponse: {statuses: [0, 200]}
 					},
 					strategyPlugins: [{
@@ -132,7 +132,7 @@ module.exports = {
 					urlPattern: 'https://fonts.gstatic.com/.*',
 					handler: 'cacheFirst',
 					method: 'GET',
-					strategyOptions: {cacheableResponse: {statuses: [0, 200]}, cacheName: 'cudua-commerce-cache',},
+					strategyOptions: {cacheableResponse: {statuses: [0, 200]}, cacheName: 'koeko-cache',},
 					strategyPlugins: [{
 						use: 'Expiration',
 						config: {
@@ -147,13 +147,7 @@ module.exports = {
 	buildModules: [
 		'@nuxtjs/dotenv',
 	],
-	build: {
-		extend (config, { isDev, isClient }) {
-		   config.node = {
-				fs: 'empty'
-			}
-		}
-	},
+
 	apollo: {
 		clientConfigs: {
 			default: '~/apollo/client-configs/default.js',
