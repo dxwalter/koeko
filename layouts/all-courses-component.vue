@@ -1,4 +1,5 @@
 <template>
+    <client-only>
         <div class="row">
 
             <div class="content-loader" v-show="isLoading">
@@ -188,6 +189,7 @@
             </div>
     
         </div>
+    </client-only>
 </template>
 
 <script>
@@ -334,10 +336,6 @@ export default {
             } else {
                 this.$removeRedBorder('studentName');
             }
-
-            
-
-            return
 
             // validate email
             if (this.studentEmail.length < 5 || this.$validateEmailAddress(this.studentEmail) == false) {
