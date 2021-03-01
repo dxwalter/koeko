@@ -73,12 +73,14 @@ query getCourseDetails($courseId: String!) {
       enrolledCount
     }
     courseContent{
-			isCompleted
-      contentId
-      displayPicture
-      courseId
-      materials
+      keywords
       title
+      videoLink
+      materials
+      courseId
+      description
+      displayPicture
+      contentId
     }
     
     code
@@ -100,6 +102,7 @@ query getVideo ($courseId: String!, $contentId: String!) {
       videoLink
       materials
       courseId
+      description
       displayPicture
       contentId
     }
@@ -128,6 +131,37 @@ mutation markAsComplete ($courseId: String!) {
   StudentMarkCourseAsComplete(input:{
     courseId: $courseId
   }){
+    code
+    success
+    message
+  }
+}
+`
+
+export const STUDENT_CREATE_COURSE_REVIEW = gql`
+mutation createCourseReview ($description: String, $courseId: String!, $reviewScore: Float!) {
+  CreateCourseReview(input:{
+    description: $description,
+    courseId: $courseId,
+    reviewScore: $reviewScore
+    
+  }) {
+    code
+    message
+    success
+  }
+}
+`
+
+export const GET_COURSE_REVIEWS = gql`
+query {
+  GetCourseReviews{
+    reviews {
+      author
+      displayPicture
+      reviewScore
+      description
+    }
     code
     success
     message

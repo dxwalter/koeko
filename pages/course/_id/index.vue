@@ -67,7 +67,7 @@
                             </div>
 
                             <div>
-                              <div v-html="content.materials"></div>
+                              <div v-html="content.description"></div>
                             </div>
                           </div>
 

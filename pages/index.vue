@@ -14,7 +14,7 @@
                         <div class="banner-smaller-text slideInLeft" data-show-animation="show">Learn fast and easy <span>DO-IT-YOURSELF</span> skills that will help your business reduce cost and increase profit.</div>
                         <div class="banner-action-area slideInUp" data-show-animation="show">
                             <n-link to="/courses" class="btn btn-primary">Get started</n-link>
-                            <button class="btn btn-white">Learn more</button>
+                            <button class="btn btn-white" @click="scrollToLocation('moreInfoAboutService')">Learn more</button>
                         </div>
                         </div>
 
@@ -31,7 +31,7 @@
 
         <!-- content area -->
 
-        <div class="section-padding light-blue-bg">
+        <div class="section-padding light-blue-bg" data-scroll-location="moreInfoAboutService">
         <div class="container">
             
             <div class="section-header-container mg-bottom-64">
@@ -114,38 +114,8 @@
             <div class="section-header">We are putting businesses on the map. This are what people are saying.</div>
             </div>
 
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="carousel-caption">
-                        <p>If Shai Reznik's TDD videos don't convince you to add automated testing your code, I don't know what will.This was the very best explanation of frameworks for brginners that I've ever seen. </p> 
-                        <img src="https://i.imgur.com/lE89Aey.jpg">
-                        <div id="image-caption">Nick Doe</div>
-                        <div id="business-name">Nick Doe</div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-caption">
-                        <p>If Shai Reznik's TDD videos don't convince you to add automated testing your code, I don't know what will.This was the very best explanation of frameworks for brginners that I've ever seen.</p> <img src="https://i.imgur.com/QptVdsp.jpg" class="img-fluid">
-                        <div id="image-caption">Cromption Greves</div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-caption">
-                        <p>If Shai Reznik's TDD videos don't convince you to add automated testing your code, I don't know what will.This was the very best explanation of frameworks for brginners that I've ever seen.</p> <img src="https://i.imgur.com/jQWThIn.jpg" class="img-fluid">
-                        <div id="image-caption">Harry Mon</div>
-                    </div>
-                </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"  data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"  data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-                </button>
-            </div>
+            <ALLREVIEWS></ALLREVIEWS>
+            <Nuxt />
 
         </div>
         </div>
@@ -165,11 +135,17 @@
 import HEADER from '~/layouts/header.vue'
 import BOTTOMADS from '~/layouts/bottom-ads.vue'
 import ALLCOURSES from '~/layouts/all-courses-component.vue'
+import ALLREVIEWS from '~/layouts/all-course-reviews.vue'
 import FOOTER from '~/layouts/footer.vue'
 
 export default {
     name: "LANDINGPAGE",
-	components: {HEADER, FOOTER, BOTTOMADS, ALLCOURSES}
+	components: {HEADER, FOOTER, BOTTOMADS, ALLCOURSES, ALLREVIEWS},
+    methods: {
+        scrollToLocation: function (location) {
+            this.$scrollToLocation(location)
+        }
+    }
 }
 </script>
 

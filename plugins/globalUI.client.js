@@ -27,4 +27,17 @@ export default ({app}, inject) => {
 
     inject("carouselSlider", carouselSlider);
 
+    let scrollToLocation = (target) => {
+
+        const offsetTop = document.querySelector(`[data-scroll-location="${target}"]`).offsetTop;
+
+        scroll({
+            top: offsetTop,
+            behavior: "smooth"
+        })
+
+    }
+
+    inject("scrollToLocation", scrollToLocation);
+
 }

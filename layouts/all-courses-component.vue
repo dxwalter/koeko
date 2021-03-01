@@ -130,7 +130,7 @@
                                                     :firstname="studentName"
                                             >Pay ₦{{formatPrice(coursePrice)}} with your card</paystack>
 
-                                            <button class="btn btn-white btn-lg width-100">Do a bank transfer</button>
+                                            <a :href="whatsappLink" class="btn btn-white btn-lg width-100">Do a bank transfer</a>
 
                                         </div>
                                     </div>
@@ -176,7 +176,7 @@
                                                     :firstname="studentName"
                                             >Pay ₦{{formatPrice(coursePrice)}} with your card</paystack>
 
-                                            <button class="btn btn-white btn-lg width-100">Do a bank transfer</button>
+                                            <a :href="whatsappLink" class="btn btn-white btn-lg width-100">Do a bank transfer</a>
 
                                         </div>
                                     </div>
@@ -229,9 +229,10 @@ export default {
             studentName: "",
             studentEmail: "",
             studentPassword: "",
-            paystackKey: "pk_test_79e353487a385c8f21e93dc8bbb40215359f00b4",
+            paystackKey: "",
             showPaymentModal: 0,
             timeOutHolder: null,
+            whatsappLink: ""
         }
     },
     computed: {
@@ -261,6 +262,7 @@ export default {
                 this.enrollStudentIntoCourse()
             }
         },
+
         SuccessfulPayment: async function (transaction) {
             
             this.showPaymentModal = 0
@@ -407,6 +409,8 @@ export default {
             this.coursePrice = coursePrice;
             this.courseId = courseId;
 
+            this.whatsappLink = `https://wa.me/234807227910?text=Hi! I want to pay for the course "${this.courseName}" and the price is ${this.coursePrice}. How do I go about it?`;
+
             if (this.accessToken) {
                 // 
                 // just enroll student into course
@@ -435,6 +439,12 @@ export default {
 
             this.studentEmail = customerData.email;
             this.studentName = customerData.fullname;
+
+            if ( process.env.NODE_ENV == 'production') {
+                this.paystackKey = "pk_live_b3c44d2eed6e3af959211cf95c7996da523f1bf8"
+            } else {
+                this.paystackKey = "pk_test_79e353487a385c8f21e93dc8bbb40215359f00b4"
+            }
         },
         formatPrice (number) {
             return this.$numberNotation(number)
@@ -456,7 +466,8 @@ export default {
             if (request.error) {
                 this.errorMessage = request.message;
                 this.errorPage = true;
-                return this.$initiateNotification('error', 'Failed request', request.message);
+                return 
+                // this.$initiateNotification('error', 'Failed request', request.message);
             }
 
             let result = request.result.data.studentGetAllCourses;
@@ -464,7 +475,8 @@ export default {
             if (result.success == false) {
                 this.errorMessage = result.message;
                 this.errorPage = true;
-                return this.$initiateNotification('error', 'Failed request', result.message);
+                return
+                // return this.$initiateNotification('error', 'Failed request', result.message);
             }
 
             this.errorPage = false
