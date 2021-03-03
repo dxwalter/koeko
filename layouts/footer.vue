@@ -1,6 +1,10 @@
 <template>
   
     <div class="section-padding">
+
+      <PWAINITCOMPONENT></PWAINITCOMPONENT>
+      <Nuxt />
+      
       <div class="container">
         <div class="bottom-links-container">
 
@@ -24,8 +28,11 @@
 </template>
 
 <script>
+import PWAINITCOMPONENT from '~/components/pwa.init.component.vue';
 export default {
-
+  components: {
+    PWAINITCOMPONENT
+  }
 }
 </script>
 

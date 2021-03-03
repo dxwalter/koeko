@@ -71,3 +71,31 @@ export const CHANGE_PASSWORD = gql`
   }
 `
 
+export const CHANGE_PROFILE_IMAGE = gql`
+mutation updateDp ($file: Upload!) {
+  EditStudentProfileImage(input:{
+    file: $file
+  }) {
+    url
+    code
+    success
+    message
+  }
+}
+`
+
+export const EDIT_STUDENT_PROFILE = gql`
+mutation editProfile($fullname: String!, $email: String!, $phoneNumber: String!, $instagramHandle: String!, $gender: String!){
+  EditStudentProfileDetails(input:{
+    fullname: $fullname,
+    email: $email,
+    phoneNumber: $phoneNumber,
+    instagramHandle: $instagramHandle,
+    gender: $gender
+  }) {
+    code
+    success
+    message
+  }
+}
+`

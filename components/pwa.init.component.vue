@@ -5,7 +5,7 @@
         <div class="pwa-app-update-container display-none" v-show="updatePwaActionArea" data-action="update">
             <div class="d-flex">
                 <div class="pwa-logo">
-                    <img src="~/assets/global-asset/image/icon.png" alt="">
+                    <img src="~/assets/images/koeko-logo-icon.png" alt="">
                 </div>
                 <div>
                     <div class="pwa-info-text-area">New app update available.</div>
@@ -25,10 +25,10 @@
         <div class="pwa-app-update-container display-none"  data-action="install" id="installAppContainer">
             <div class="d-flex">
                 <div class="pwa-logo">
-                    <img src="~/assets/global-asset/image/icon.png" alt="">
+                    <img src="~/assets/images/koeko-logo-icon.png" alt="">
                 </div>
                 <div>
-                    <div class="pwa-info-text-area">Install this app now to enjoy easy access.</div>
+                    <div class="pwa-info-text-area">Do you want easy access to our courses? Install app now. It is fast.</div>
                     <div class="pwa-action-area">
                         <button class="btn btn-primary btn-md" id="installUserPwa">
                             Install app
@@ -86,12 +86,12 @@ export default {
             this.currenTimeStamp =  new Date().getTime();
             this.timeToInstall = timeStamps.timeToInstall
 
-            let localTime = localStorage.getItem('cudua_retry_installation');
+            let localTime = localStorage.getItem('koeko-retry-installation');
 
             if (localTime == null || localTime == 0) {
                 let currentTime = new Date().getTime();
                 let nextInstall = currentTime + 3600
-                localStorage.setItem('cudua_retry_installation', nextInstall);
+                localStorage.setItem('koeko-retry-installation', nextInstall);
             }
 
             this.checkPwaUpdate();
@@ -111,7 +111,7 @@ export default {
             installApp.classList.add('display-none');
 
             if (process.browser) {
-                localStorage.setItem('cudua_retry_installation', newUpdateTime)
+                localStorage.setItem('koeko-retry-installation', newUpdateTime)
             }
 
         },

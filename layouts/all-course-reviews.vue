@@ -25,7 +25,12 @@
                         <div class="carousel-item" v-bind:class="[index == 0 ? 'active' : '']"  v-for="(review, index) in returnAllReviews" :key="index">
                             <div class="carousel-caption">
                                 <p>{{review.description}}</p> 
-                                <img src="https://i.imgur.com/lE89Aey.jpg">
+                                <div v-if="review.displayPicture.length > 0" class="image-review-cover">
+                                    <img :src="review.displayPicture">
+                                </div>
+                                <div class="" v-else>
+                                    <div class="temporary-name">{{getNameLogo(review.author)}}</div>
+                                </div>
                                 <div id="image-caption">{{review.author}}</div>
                                 <div class="carousel-review-star">
                                     <StarRating :score=review.reviewScore></StarRating>
@@ -71,6 +76,11 @@ export default {
         }
     },
     methods: {
+		getNameLogo: function (businessName) {
+			if (process.browser) {
+				return this.$convertNameToLogo(businessName)
+			}
+        },
         getAllReviews: async function () {
 
             this.isLoading = true;

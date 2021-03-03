@@ -43,11 +43,16 @@
                             </div>
 
                             <div class="">
-                                <div class="course-content-controller">
-                                    <button class="btn btn-success" id="markAsComplete" @click="markAsComplete()">
+                                <div class="course-content-controller mg-bottom-32">
+                                    <button class="btn btn-primary" id="markAsComplete" @click="markAsComplete()">
                                         Mark as complete
                                         <div class="loader-action"><span class="loader"></span></div>
                                     </button>
+                                </div>
+                                <div class="course-content-controller">
+                                    <a class="btn btn-success" href="https://wa.me/234807227910?text=Hi! I have a question">
+                                        Do you have a question? Click to ask
+                                    </a>
                                 </div>
                             </div>
 
